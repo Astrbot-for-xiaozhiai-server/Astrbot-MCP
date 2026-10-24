@@ -1,0 +1,7 @@
+name: astrbot_plugin_mcp_bridge
+display_name: MCP 服务桥接
+desc: 连接多个 MCP 服务器（stdio / SSE / Streamable HTTP），把它们的工具动态注册给 AstrBot Agent，并支持知识库自动学习。
+version: 1.0.0
+author: Astrbot-MCP
+repo: https://github.com/Astrbot-for-xiaozhiai-server/Astrbot-MCP
+astrbot_version: ">=4.5.7"

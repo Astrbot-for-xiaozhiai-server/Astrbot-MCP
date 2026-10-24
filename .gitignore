@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Runtime data (knowledge base, sandbox files, sqlite DBs, calendars)
+data/
+config.yaml
+config.yml
+.env
+
+# Editor
+.vscode/
+.idea/
+.DS_Store
+
+# AstrBot plugin local config
+astrbot_plugin/*_config.json

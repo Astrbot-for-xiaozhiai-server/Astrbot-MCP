@@ -1,0 +1,3 @@
+# AstrBot already ships with mcp and httpx. Match AstrBot's own 1.x constraint.
+mcp>=1.9,<2
+httpx>=0.27

@@ -1,0 +1,131 @@
+# =============================================================================
+# astrbot-mcp configuration
+#
+# Copy to config.yaml (or point ASTRBOT_MCP_CONFIG / --config at this file).
+# Values support ${ENV_VAR} and ${ENV_VAR:-default} expansion.
+# Relative paths are resolved against this file's directory.
+# =============================================================================
+
+server:
+  name: astrbot-mcp
+  instructions: |
+    你是一个多能力工具服务器，为 AstrBot 提供通用服务接入能力。
+    工具按服务分组：http_*（通用 HTTP）、web_*（搜索与抓取）、
+    get_* / convert_*（天气、时间、汇率）、fs_*（文件沙箱）、
+    sqlite_*（数据库）、github_*（GitHub）、mail_*（邮件）、
+    calendar_*（日历）、kb_*（可自学习知识库）。
+    调用前先确认参数，涉及写操作时格外谨慎。
+  # stdio | sse | streamable-http
+  transport: stdio
+  # HTTP 模式下建议保持 127.0.0.1，或配置 auth_token 后再暴露到 0.0.0.0
+  host: 127.0.0.1
+  port: 8765
+  # HTTP 路径（仅 sse / streamable-http 生效）
+  sse_path: /sse
+  message_path: /messages/
+  streamable_http_path: /mcp
+  mount_path: /
+  stateless_http: false
+  json_response: false
+  # 非空时，HTTP 传输要求 Authorization: Bearer <token>
+  auth_token: ${ASTRBOT_MCP_AUTH_TOKEN}
+  log_level: INFO
+
+security:
+  # 允许访问内网 / localhost。默认关闭以防 SSRF。
+  allow_private_networks: false
+  # 为空表示允许任意公网域名；支持 example.com 及其子域。
+  allowed_domains: []
+  blocked_domains:
+    - localhost
+    - metadata.google.internal
+  request_timeout: 30
+  max_response_bytes: 262144
+  max_redirects: 5
+  user_agent: astrbot-mcp/0.1 (+https://github.com/)
+
+services:
+  # ---------------------------------------------------------------------------
+  http_api:
+    enabled: true
+
+  # ---------------------------------------------------------------------------
+  web_search:
+    enabled: true
+    # duckduckgo | tavily | bing | searxng
+    provider: duckduckgo
+    api_key: ${TAVILY_API_KEY}
+    # searxng 必填，例如 https://searx.example.com
+    base_url: ${SEARXNG_BASE_URL}
+    max_results: 8
+    timeout: 20
+
+  # ---------------------------------------------------------------------------
+  public_apis:
+    enabled: true
+    weather_language: zh
+
+  # ---------------------------------------------------------------------------
+  files:
+    enabled: true
+    # 所有路径都被限制在该目录内（沙箱）
+    root: ./data/files
+    max_read_bytes: 1048576
+    max_write_bytes: 5242880
+    allow_write: false
+    allow_delete: false
+
+  # ---------------------------------------------------------------------------
+  sqlite:
+    enabled: true
+    root: ./data/sqlite
+    allow_write: false
+    max_rows: 200
+
+  # ---------------------------------------------------------------------------
+  github:
+    enabled: true
+    token: ${GITHUB_TOKEN}
+    base_url: https://api.github.com
+    allow_write: false
+    per_page: 20
+
+  # ---------------------------------------------------------------------------
+  mail:
+    enabled: false
+    smtp_host: smtp.example.com
+    smtp_port: 465
+    smtp_ssl: true
+    smtp_starttls: false
+    username: bot@example.com
+    password: ${MAIL_PASSWORD}
+    from_addr: bot@example.com
+    imap_host: imap.example.com
+    imap_port: 993
+    imap_ssl: true
+    max_messages: 20
+    timeout: 30
+
+  # ---------------------------------------------------------------------------
+  calendar:
+    enabled: false
+    root: ./data/calendar
+    default_calendar: default
+    allow_write: true
+
+  # ---------------------------------------------------------------------------
+  knowledge:
+    enabled: true
+    db_path: ./data/knowledge.db
+    chunk_size: 800
+    chunk_overlap: 100
+    max_results: 8
+    max_content_bytes: 2000000
+    max_chunks_per_doc: 500
+    embedding:
+      enabled: false
+      base_url: ${EMBEDDING_BASE_URL}
+      api_key: ${OPENAI_API_KEY}
+      model: ${EMBEDDING_MODEL}
+      dimensions: 0
+      timeout: 30

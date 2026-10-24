@@ -1,0 +1,267 @@
+{
+  "servers": {
+    "type": "template_list",
+    "description": "MCP 服务器列表",
+    "hint": "支持 stdio、Streamable HTTP、SSE 三种连接方式。需要 AstrBot >= 4.10.4；旧版本请使用下面的 servers_json。",
+    "templates": {
+      "stdio": {
+        "name": "stdio（本地进程）",
+        "hint": "在 AstrBot 运行环境中启动 MCP 程序",
+        "display_item": "name",
+        "items": {
+          "name": {
+            "description": "服务器名称（唯一）",
+            "type": "string",
+            "default": "local"
+          },
+          "transport": {
+            "description": "传输方式",
+            "type": "string",
+            "default": "stdio"
+          },
+          "command": {
+            "description": "启动命令，例如 uvx / npx / python",
+            "type": "string",
+            "default": ""
+          },
+          "args_json": {
+            "description": "命令参数（JSON 数组）",
+            "type": "text",
+            "default": "[]"
+          },
+          "env_json": {
+            "description": "环境变量（JSON 对象，会与当前环境合并）",
+            "type": "text",
+            "default": "{}"
+          },
+          "cwd": {
+            "description": "工作目录（可选）",
+            "type": "string",
+            "default": ""
+          },
+          "enabled": {
+            "description": "是否启用",
+            "type": "bool",
+            "default": true
+          },
+          "connect_timeout": {
+            "description": "连接超时（秒）",
+            "type": "int",
+            "default": 30
+          },
+          "tool_timeout": {
+            "description": "工具调用超时（秒）",
+            "type": "int",
+            "default": 120
+          },
+          "ignore_tools": {
+            "description": "不暴露给 LLM 的工具名，逗号分隔",
+            "type": "string",
+            "default": ""
+          }
+        }
+      },
+      "streamable_http": {
+        "name": "Streamable HTTP（远程）",
+        "hint": "连接服务商或自己部署的远程 MCP 服务",
+        "display_item": "name",
+        "items": {
+          "name": {
+            "description": "服务器名称（唯一）",
+            "type": "string",
+            "default": "remote"
+          },
+          "transport": {
+            "description": "传输方式",
+            "type": "string",
+            "default": "streamable_http"
+          },
+          "url": {
+            "description": "MCP 地址，例如 https://example.com/mcp",
+            "type": "string",
+            "default": ""
+          },
+          "headers_json": {
+            "description": "请求头（JSON 对象，例如 Authorization）",
+            "type": "text",
+            "default": "{}"
+          },
+          "enabled": {
+            "description": "是否启用",
+            "type": "bool",
+            "default": true
+          },
+          "connect_timeout": {
+            "description": "连接超时（秒）",
+            "type": "int",
+            "default": 30
+          },
+          "tool_timeout": {
+            "description": "工具调用超时（秒）",
+            "type": "int",
+            "default": 120
+          },
+          "sse_read_timeout": {
+            "description": "HTTP 流读取超时（秒）",
+            "type": "int",
+            "default": 300
+          },
+          "ignore_tools": {
+            "description": "不暴露给 LLM 的工具名，逗号分隔",
+            "type": "string",
+            "default": ""
+          }
+        }
+      },
+      "sse": {
+        "name": "SSE（旧版远程）",
+        "hint": "仅用于仍使用旧版 SSE 传输的服务",
+        "display_item": "name",
+        "items": {
+          "name": {
+            "description": "服务器名称（唯一）",
+            "type": "string",
+            "default": "legacy"
+          },
+          "transport": {
+            "description": "传输方式",
+            "type": "string",
+            "default": "sse"
+          },
+          "url": {
+            "description": "SSE 地址，例如 https://example.com/sse",
+            "type": "string",
+            "default": ""
+          },
+          "headers_json": {
+            "description": "请求头（JSON 对象）",
+            "type": "text",
+            "default": "{}"
+          },
+          "enabled": {
+            "description": "是否启用",
+            "type": "bool",
+            "default": true
+          },
+          "connect_timeout": {
+            "description": "连接超时（秒）",
+            "type": "int",
+            "default": 30
+          },
+          "tool_timeout": {
+            "description": "工具调用超时（秒）",
+            "type": "int",
+            "default": 120
+          },
+          "sse_read_timeout": {
+            "description": "SSE 读取超时（秒）",
+            "type": "int",
+            "default": 300
+          },
+          "ignore_tools": {
+            "description": "不暴露给 LLM 的工具名，逗号分隔",
+            "type": "string",
+            "default": ""
+          }
+        }
+      }
+    }
+  },
+  "servers_json": {
+    "type": "text",
+    "description": "服务器配置 JSON（兼容旧版 AstrBot / 批量导入）",
+    "hint": "支持数组、名称到配置的对象，或 {\"mcpServers\": {...}} 格式。与上面的可视化配置合并，同名时此处优先。",
+    "default": ""
+  },
+  "auto_register": {
+    "type": "bool",
+    "description": "自动把 MCP 工具注册为 AstrBot LLM 工具",
+    "hint": "关闭后仍可使用 mcp_list_servers / mcp_list_tools / mcp_call_tool 三个通用工具。",
+    "default": true
+  },
+  "tool_prefix": {
+    "type": "string",
+    "description": "自动注册工具的名称前缀",
+    "default": "mcp"
+  },
+  "tool_name_max_length": {
+    "type": "int",
+    "description": "自动注册工具名最大长度",
+    "hint": "多数 LLM 提供商限制为 64 个字符。",
+    "default": 64
+  },
+  "tool_denylist": {
+    "type": "string",
+    "description": "全局工具黑名单，逗号分隔",
+    "hint": "可填原始工具名或带前缀的完整名称。",
+    "default": ""
+  },
+  "max_tools_per_server": {
+    "type": "int",
+    "description": "每个服务器最多注册多少个工具",
+    "default": 200
+  },
+  "connect_timeout": {
+    "type": "int",
+    "description": "默认连接超时（秒）",
+    "default": 30
+  },
+  "tool_timeout": {
+    "type": "int",
+    "description": "默认工具调用超时（秒）",
+    "default": 120
+  },
+  "auto_learn": {
+    "type": "object",
+    "description": "知识库自动学习",
+    "hint": "开启后，每轮对话会额外调用一次 LLM 提取长期记忆，并写入指定的知识库 MCP 服务器。会产生额外 token 消耗。",
+    "items": {
+      "enabled": {
+        "description": "启用自动学习",
+        "type": "bool",
+        "default": false
+      },
+      "knowledge_server": {
+        "description": "提供知识库工具的 MCP 服务器名称（必须与上方服务器名一致）",
+        "type": "string",
+        "default": "astrbot-mcp"
+      },
+      "tool_name": {
+        "description": "写入知识库使用的工具名",
+        "type": "string",
+        "default": "kb_remember"
+      },
+      "provider_id": {
+        "description": "用于提取记忆的模型提供商 ID；留空使用当前会话模型",
+        "type": "string",
+        "default": ""
+      },
+      "tags": {
+        "description": "写入知识库时附加的标签",
+        "type": "string",
+        "default": "auto-learned"
+      },
+      "min_message_chars": {
+        "description": "触发学习的最小用户消息长度",
+        "type": "int",
+        "default": 20
+      },
+      "max_conversation_chars": {
+        "description": "送入提取模型的最大对话字符数",
+        "type": "int",
+        "default": 4000
+      },
+      "learn_in_group": {
+        "description": "是否在群聊中学习",
+        "hint": "默认关闭，避免把群聊内容写入长期记忆。",
+        "type": "bool",
+        "default": false
+      },
+      "prompt": {
+        "description": "记忆提取提示词",
+        "type": "text",
+        "default": "你是知识库整理助手。请从下面的对话中提取值得长期记住的事实、用户偏好、重要结论或约定。\n只输出要保存的条目，每行一条，使用简洁陈述句；不要输出解释、标题或 Markdown。\n如果没有任何值得长期记住的内容，只输出 NONE。"
+      }
+    }
+  }
+}
