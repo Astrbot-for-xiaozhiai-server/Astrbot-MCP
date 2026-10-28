@@ -502,3 +502,4 @@ DuckDuckGo 可能限流。配置 Tavily / Bing / SearXNG 作为后端。
 ## 9. 许可证
 
 [MIT](LICENSE)
+[![M8ven Verified](https://m8ven.ai/badge/mcp/astrbot-for-xiaozhiai-server-astrbot-mcp-bllve3?variant=verified&v=dfb3647650f49e9aa3f0132bb4d1b3ec)](https://m8ven.ai/mcp/astrbot-for-xiaozhiai-server-astrbot-mcp-bllve3?s=readme)
