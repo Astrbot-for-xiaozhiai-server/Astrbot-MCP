@@ -4,7 +4,7 @@
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![M8venVerified](https://m8ven.ai/badge/mcp/astrbot-for-xiaozhiai-server/astrbot-mcp?variant=verified)](https://m8ven.ai/mcp/astrbot-for-xiaozhiai-server/astrbot-mcp?s=readme)
-[![M8venVerified](https://m8ven.ai/badge/mcp/astrbot-for-xiaozhiai-server/astrbot-mcp?variant=verified)](https://m8ven.ai/mcp/astrbot-for-xiaozhiai-server/astrbot-mcp?s=readme)
+
 
 一个可独立运行的 **MCP（Model Context Protocol）服务器**，外加一个 **AstrBot 插件桥接**。  
 它把 HTTP、搜索、天气/时间/汇率、文件、SQLite、GitHub、邮件、日历和可自学习知识库统一封装成 MCP 工具，供 AstrBot Agent 调用。
